@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>nvision demo</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+        background: #111;
+        color: #eee;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      main {
+        width: min(420px, 100%);
+        background: #1b1b1b;
+        border: 1px solid #333;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 1.4rem;
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: #bbb;
+        line-height: 1.5;
+      }
+
+      .error {
+        color: #ff8a80;
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        margin: 12px 0 6px;
+        font-size: 0.9rem;
+        color: #ccc;
+      }
+
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #444;
+        border-radius: 10px;
+        background: #111;
+        color: #fff;
+        padding: 10px 12px;
+      }
+
+      button,
+      a.button {
+        display: inline-block;
+        margin-top: 16px;
+        border: 0;
+        border-radius: 10px;
+        background: #03a9f4;
+        color: #fff;
+        padding: 10px 14px;
+        text-decoration: none;
+        cursor: pointer;
+        font: inherit;
+      }
+    </style>
+    <script src="/local/demo/config.js"></script>
+    <script src="/local/demo/auto-login.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <div id="loading">
+        <h1>nvision demo</h1>
+        <p>Signing you in…</p>
+      </div>
+
+      <div id="fallback" hidden>
+        <h1>nvision demo</h1>
+        <p id="error" class="error"></p>
+        <p>Use these demo credentials if auto-login did not start:</p>
+
+        <label for="username">Username</label>
+        <input id="username" autocomplete="username" readonly />
+
+        <label for="password">Password</label>
+        <input id="password" type="text" autocomplete="current-password" readonly />
+
+        <button type="button" onclick="startDemoLogin()">Try auto-login again</button>
+        <a class="button" href="/auth/login">Open Home Assistant login</a>
+      </div>
+    </main>
+  </body>
+</html>

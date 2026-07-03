@@ -17,7 +17,17 @@ The demo loads the checked-in card bundle from `/local/nvision/nvision.js`. On f
 
 Add demo controls anywhere with the reusable card in [`demo/lovelace/demo-controls-card.yaml`](demo/lovelace/demo-controls-card.yaml). In the dashboard editor: **Add card → Manual**, then paste the YAML.
 
-If the dashboard is missing after switching modes, redeploy once. If it still does not appear, delete the app volume and redeploy so the seed runs on a fresh Home Assistant instance.
+## Auto-login
+
+Trusted-network auto-login is unreliable behind reverse proxies, so the demo uses a landing page instead.
+
+1. Set `DEMO_USERNAME` and `DEMO_PASSWORD` in Dokploy to match your demo Home Assistant user.
+2. Redeploy.
+3. Route your public URL to **`/local/demo/`**, or send visitors there directly.
+
+That page signs in through Home Assistant's login API and redirects to the demo dashboard. If auto-login fails, it shows the demo credentials and a link to the normal `/auth/login` page.
+
+Patching or autofilling the built-in `/auth` page itself is not supported by Home Assistant.
 
 ## Deploy With Dokploy
 

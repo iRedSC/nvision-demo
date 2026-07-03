@@ -7,12 +7,17 @@ services:
       - "${HA_PORT:-8123}:8123"
     environment:
       TZ: ${TZ:-Etc/UTC}
+      DEMO_USERNAME: ${DEMO_USERNAME:-}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+      DEMO_DASHBOARD_PATH: ${DEMO_DASHBOARD_PATH:-/lovelace/nvision-demo}
     volumes:
       - homeassistant-config:/config
       - ./demo/home-assistant/configuration.yaml:/config/configuration.yaml:ro
       - ./demo/home-assistant/ui-lovelace.yaml:/bootstrap/ui-lovelace.yaml:ro
       - ./scripts/entrypoint.sh:/bootstrap/entrypoint.sh:ro
       - ./scripts/seed-dashboard.py:/bootstrap/seed-dashboard.py:ro
+      - ./scripts/generate-demo-auth.py:/bootstrap/generate-demo-auth.py:ro
+      - ./www/demo:/bootstrap/www/demo:ro
       - ./www/nvision:/config/www/nvision:ro
 
 volumes:

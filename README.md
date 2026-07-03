@@ -11,9 +11,9 @@ cp .env.example .env
 docker compose up -d
 ```
 
-Open `http://localhost:8123`, complete Home Assistant onboarding, then import the dashboard from `demo/home-assistant/ui-lovelace.yaml` using the Lovelace raw configuration editor.
+Open `http://localhost:8123`, complete Home Assistant onboarding, then open **nvision Demo** in the sidebar.
 
-The demo loads the checked-in card bundle from `/local/nvision/nvision.js`. Lovelace runs in **storage** mode so you can edit dashboards in the UI; copy YAML back into `ui-lovelace.yaml` when you want to version changes.
+The demo loads the checked-in card bundle from `/local/nvision/nvision.js`. Lovelace runs in **storage** mode for the default Overview, while the nvision dashboard is a YAML dashboard registered in `configuration.yaml`. Edit it via **Raw configuration editor**, then copy changes back into `demo/home-assistant/ui-lovelace.yaml` to version them.
 
 ## Deploy With Dokploy
 

@@ -1,0 +1,32 @@
+services:
+  nvision-bundle:
+    image: curlimages/curl:latest
+    restart: "no"
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      mkdir -p /bundle &&
+      curl -fsSL "$${NVISION_BUNDLE_URL}" -o /bundle/nvision.js
+    environment:
+      NVISION_BUNDLE_URL: ${NVISION_BUNDLE_URL:-https://raw.githubusercontent.com/iRedSC/nvision/main/dist/nvision.js}
+    volumes:
+      - nvision-bundle:/bundle
+
+  homeassistant:
+    image: homeassistant/home-assistant:stable
+    restart: unless-stopped
+    depends_on:
+      nvision-bundle:
+        condition: service_completed_successfully
+    ports:
+      - "${HA_PORT:-8123}:8123"
+    environment:
+      TZ: ${TZ:-Etc/UTC}
+    volumes:
+      - homeassistant-config:/config
+      - ./demo/home-assistant/configuration.yaml:/config/configuration.yaml:ro
+      - ./demo/home-assistant/ui-lovelace.yaml:/config/ui-lovelace.yaml:ro
+      - nvision-bundle:/config/www/nvision:ro
+
+volumes:
+  homeassistant-config:
+  nvision-bundle:

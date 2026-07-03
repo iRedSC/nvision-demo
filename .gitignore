@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+
+# Local Home Assistant/runtime state if bind-mounted during debugging
+.storage/
+deps/
+tts/
+www/nvision/nvision.js
+*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

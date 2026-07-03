@@ -1,0 +1,180 @@
+homeassistant:
+  name: nvision Demo
+  unit_system: metric
+  time_zone: Etc/UTC
+
+default_config:
+
+frontend:
+  extra_module_url:
+    - /local/nvision/nvision.js
+
+lovelace:
+  mode: yaml
+
+input_boolean:
+  nvision_pump:
+    name: Nvision Pump
+    icon: mdi:pump
+  nvision_door:
+    name: Nvision Door
+    icon: mdi:door
+
+input_number:
+  nvision_activity_level:
+    name: Nvision Activity Level
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+    initial: 64
+    icon: mdi:pulse
+  nvision_air_quality_index:
+    name: Nvision Air Quality Index
+    min: 0
+    max: 200
+    step: 1
+    mode: slider
+    initial: 42
+    icon: mdi:air-filter
+  nvision_tank_level:
+    name: Nvision Tank Level
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+    initial: 73
+    icon: mdi:water-percent
+  nvision_power_draw:
+    name: Nvision Power Draw
+    min: 0
+    max: 3000
+    step: 25
+    mode: slider
+    initial: 860
+    icon: mdi:flash
+  nvision_solar_power:
+    name: Nvision Solar Power
+    min: 0
+    max: 5000
+    step: 50
+    mode: slider
+    initial: 1450
+    icon: mdi:solar-power
+  nvision_battery_power:
+    name: Nvision Battery Power
+    min: -2000
+    max: 2000
+    step: 25
+    mode: slider
+    initial: 325
+    icon: mdi:battery-charging
+  nvision_frequency:
+    name: Nvision Signal Frequency
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+    initial: 58
+    icon: mdi:sine-wave
+  nvision_temperature:
+    name: Nvision Temperature
+    min: -20
+    max: 120
+    step: 0.5
+    mode: slider
+    initial: 21.5
+    icon: mdi:thermometer
+  nvision_reactor_temperature:
+    name: Nvision Reactor Temperature
+    min: 0
+    max: 1000
+    step: 5
+    mode: slider
+    initial: 640
+    icon: mdi:coolant-temperature
+
+timer:
+  nvision_cycle:
+    name: Nvision Cycle
+    duration: "00:25:00"
+
+switch:
+  - platform: template
+    switches:
+      nvision_recirculation:
+        friendly_name: Nvision Recirculation
+        value_template: "{{ is_state('input_boolean.nvision_pump', 'on') }}"
+        icon_template: mdi:pump
+        turn_on:
+          service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.nvision_pump
+        turn_off:
+          service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.nvision_pump
+
+template:
+  - sensor:
+      - name: Nvision Activity
+        unique_id: nvision_activity
+        state: "{{ states('input_number.nvision_activity_level') | float(0) }}"
+        unit_of_measurement: "%"
+        icon: mdi:pulse
+      - name: Nvision Air Quality
+        unique_id: nvision_air_quality
+        state: "{{ states('input_number.nvision_air_quality_index') | float(0) }}"
+        unit_of_measurement: AQI
+        icon: mdi:air-filter
+      - name: Nvision Tank Level
+        unique_id: nvision_tank_level
+        state: "{{ states('input_number.nvision_tank_level') | float(0) }}"
+        unit_of_measurement: "%"
+        icon: mdi:water-percent
+      - name: Nvision Power Draw
+        unique_id: nvision_power_draw
+        state: "{{ states('input_number.nvision_power_draw') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:flash
+      - name: Nvision Solar Power
+        unique_id: nvision_solar_power
+        state: "{{ states('input_number.nvision_solar_power') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:solar-power
+      - name: Nvision Battery Power
+        unique_id: nvision_battery_power
+        state: "{{ states('input_number.nvision_battery_power') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:battery-charging
+      - name: Nvision Signal Frequency
+        unique_id: nvision_signal_frequency
+        state: "{{ states('input_number.nvision_frequency') | float(0) }}"
+        unit_of_measurement: Hz
+        state_class: measurement
+        icon: mdi:sine-wave
+      - name: Nvision Temperature
+        unique_id: nvision_temperature
+        state: "{{ states('input_number.nvision_temperature') | float(0) }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        icon: mdi:thermometer
+      - name: Nvision Reactor Temperature
+        unique_id: nvision_reactor_temperature
+        state: "{{ states('input_number.nvision_reactor_temperature') | float(0) }}"
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        icon: mdi:coolant-temperature
+    binary_sensor:
+      - name: Nvision Door
+        unique_id: nvision_door
+        state: "{{ is_state('input_boolean.nvision_door', 'on') }}"
+        device_class: door

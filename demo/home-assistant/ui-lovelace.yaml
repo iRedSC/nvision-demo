@@ -1,0 +1,144 @@
+title: nvision Demo
+resources:
+  - url: /local/nvision/nvision.js
+    type: module
+views:
+  - title: Cards
+    path: nvision
+    icon: mdi:view-dashboard
+    cards:
+      - type: markdown
+        content: >
+          # nvision
+
+          These demo entities are local to this demo instance. Use the controls
+          at the bottom of the dashboard to change values and see the cards react.
+
+      - type: grid
+        title: Overview
+        columns: 2
+        square: false
+        cards:
+          - type: custom:nvision-entity-overview-card
+            name: Facility Overview
+            mode: manual
+            entities:
+              - sensor.nvision_temperature
+              - sensor.nvision_power_draw
+              - sensor.nvision_tank_level
+              - sensor.nvision_air_quality
+              - sensor.nvision_signal_frequency
+              - switch.nvision_recirculation
+              - binary_sensor.nvision_door
+              - timer.nvision_cycle
+            show_info: true
+          - type: custom:nvision-event-log-card
+            title: Event Log
+            entities:
+              - sensor.nvision_temperature
+              - sensor.nvision_power_draw
+              - switch.nvision_recirculation
+              - binary_sensor.nvision_door
+
+      - type: grid
+        title: Signals
+        columns: 3
+        square: false
+        cards:
+          - type: custom:nvision-activity-card
+            name: Activity
+            entity: sensor.nvision_activity
+            speed: 0.9
+          - type: custom:nvision-air-quality-card
+            name: Air Quality
+            entity: sensor.nvision_air_quality
+            min: 0
+            max: 200
+          - type: custom:nvision-circle-gauge-card
+            name: Cycle
+            entity: timer.nvision_cycle
+          - type: custom:nvision-liquid-card
+            name: Tank Level
+            entity: sensor.nvision_tank_level
+            min: 0
+            max: 100
+            liquid_style: bubbles
+            level_color: true
+          - type: custom:nvision-waveform-card
+            name: Signal
+            entity: sensor.nvision_signal_frequency
+            min: 0
+            max: 100
+            layout: field
+            size: balanced
+            motion: surge
+          - type: custom:nvision-reactor-temp-card
+            name: Reactor
+            entity: sensor.nvision_reactor_temperature
+            target_entity: input_number.nvision_reactor_temperature
+            min: 0
+            max: 1000
+
+      - type: grid
+        title: Power and History
+        columns: 2
+        square: false
+        cards:
+          - type: custom:nvision-power-draw-card
+            name: Main Draw
+            entity: sensor.nvision_power_draw
+            min: 0
+            max: 3000
+          - type: custom:nvision-power-glance-card
+            entities:
+              - sensor.nvision_power_draw
+              - sensor.nvision_solar_power
+              - sensor.nvision_battery_power
+            columns: 3
+            min: -2000
+            max: 5000
+          - type: custom:nvision-stat-card
+            name: Temperature
+            entity: sensor.nvision_temperature
+            trend_period: 3600
+            graph: area
+            graph_height: 80
+          - type: custom:nvision-heat-map-card
+            name: Temperature Rhythm
+            entity: sensor.nvision_temperature
+            preset: timeline_24h
+            operation: auto
+            color_mode: temperature
+            show_axis_labels: true
+            show_legend: true
+            show_current: true
+          - type: custom:nvision-sum-card
+            name: Power Mix
+            entities:
+              - entity: sensor.nvision_power_draw
+                name: Load
+                icon: mdi:flash
+              - entity: sensor.nvision_solar_power
+                name: Solar
+                icon: mdi:solar-power
+              - entity: sensor.nvision_battery_power
+                name: Battery
+                icon: mdi:battery-charging
+            columns: 3
+            theme: energy
+
+      - type: entities
+        title: Demo Controls
+        entities:
+          - input_number.nvision_activity_level
+          - input_number.nvision_air_quality_index
+          - input_number.nvision_tank_level
+          - input_number.nvision_power_draw
+          - input_number.nvision_solar_power
+          - input_number.nvision_battery_power
+          - input_number.nvision_frequency
+          - input_number.nvision_temperature
+          - input_number.nvision_reactor_temperature
+          - switch.nvision_recirculation
+          - input_boolean.nvision_door
+          - timer.nvision_cycle

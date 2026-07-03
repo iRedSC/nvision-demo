@@ -2,6 +2,7 @@ services:
   homeassistant:
     image: homeassistant/home-assistant:stable
     restart: unless-stopped
+    entrypoint: ["/bin/sh", "/bootstrap/entrypoint.sh"]
     ports:
       - "${HA_PORT:-8123}:8123"
     environment:
@@ -9,7 +10,9 @@ services:
     volumes:
       - homeassistant-config:/config
       - ./demo/home-assistant/configuration.yaml:/config/configuration.yaml:ro
-      - ./demo/home-assistant/ui-lovelace.yaml:/config/ui-lovelace.yaml:ro
+      - ./demo/home-assistant/ui-lovelace.yaml:/bootstrap/ui-lovelace.yaml:ro
+      - ./scripts/entrypoint.sh:/bootstrap/entrypoint.sh:ro
+      - ./scripts/seed-dashboard.py:/bootstrap/seed-dashboard.py:ro
       - ./www/nvision:/config/www/nvision:ro
 
 volumes:

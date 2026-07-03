@@ -19,13 +19,6 @@ frontend:
 
 lovelace:
   mode: storage
-  dashboards:
-    nvision-demo:
-      mode: yaml
-      title: nvision Demo
-      icon: mdi:view-dashboard
-      show_in_sidebar: true
-      filename: ui-lovelace.yaml
 
 input_boolean:
   nvision_pump:

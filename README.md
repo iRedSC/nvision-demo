@@ -13,7 +13,7 @@ docker compose up -d
 
 Open `http://localhost:8123`, complete Home Assistant onboarding, then open the preloaded **nvision Demo** dashboard.
 
-The demo loads the card bundle from `/local/nvision/nvision.js`. On startup, the `nvision-bundle` service downloads that file into a Docker volume from `NVISION_BUNDLE_URL`.
+The demo loads the checked-in card bundle from `/local/nvision/nvision.js`.
 
 ## Deploy With Dokploy
 
@@ -28,13 +28,13 @@ The first time the app starts, open the routed URL and complete Home Assistant o
 
 ## Bundle Version
 
-By default, the demo tracks the committed bundle on `main`:
+The demo vendors the built card bundle at:
 
-```env
-NVISION_BUNDLE_URL=https://raw.githubusercontent.com/iRedSC/nvision/main/dist/nvision.js
+```text
+www/nvision/nvision.js
 ```
 
-For a stable public demo, set `NVISION_BUNDLE_URL` in Dokploy to a pinned release or tag URL after publishing one.
+To update the public demo bundle, rebuild the card repo and copy its `dist/nvision.js` to this path before redeploying.
 
 ## Public Access
 

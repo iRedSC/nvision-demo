@@ -6,7 +6,6 @@
 .storage/
 deps/
 tts/
-www/nvision/nvision.js
 *.log
 
 # OS/editor noise

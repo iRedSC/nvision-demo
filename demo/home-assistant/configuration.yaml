@@ -5,12 +5,20 @@ homeassistant:
 
 default_config:
 
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 10.0.1.21
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
 frontend:
   extra_module_url:
     - /local/nvision/nvision.js
 
 lovelace:
-  mode: yaml
+  mode: storage
 
 input_boolean:
   nvision_pump:
@@ -20,15 +28,19 @@ input_boolean:
     name: Nvision Door
     icon: mdi:door
 
+input_select:
+  nvision_activity:
+    name: Nvision Activity
+    options:
+      - still
+      - walking
+      - running
+      - in_vehicle
+      - tilting
+    initial: still
+    icon: mdi:walk
+
 input_number:
-  nvision_activity_level:
-    name: Nvision Activity Level
-    min: 0
-    max: 100
-    step: 1
-    mode: slider
-    initial: 64
-    icon: mdi:pulse
   nvision_air_quality_index:
     name: Nvision Air Quality Index
     min: 0
@@ -119,9 +131,8 @@ template:
   - sensor:
       - name: Nvision Activity
         unique_id: nvision_activity
-        state: "{{ states('input_number.nvision_activity_level') | float(0) }}"
-        unit_of_measurement: "%"
-        icon: mdi:pulse
+        state: "{{ states('input_select.nvision_activity') }}"
+        icon: mdi:walk
       - name: Nvision Air Quality
         unique_id: nvision_air_quality
         state: "{{ states('input_number.nvision_air_quality_index') | float(0) }}"

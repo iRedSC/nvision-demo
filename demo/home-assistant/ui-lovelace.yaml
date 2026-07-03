@@ -130,7 +130,7 @@ views:
       - type: entities
         title: Demo Controls
         entities:
-          - input_number.nvision_activity_level
+          - input_select.nvision_activity
           - input_number.nvision_air_quality_index
           - input_number.nvision_tank_level
           - input_number.nvision_power_draw

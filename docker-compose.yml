@@ -9,7 +9,6 @@ services:
     volumes:
       - homeassistant-config:/config
       - ./demo/home-assistant/configuration.yaml:/config/configuration.yaml:ro
-      - ./demo/home-assistant/ui-lovelace.yaml:/config/ui-lovelace.yaml:ro
       - ./www/nvision:/config/www/nvision:ro
 
 volumes:

@@ -7,8 +7,9 @@ views:
         content: >
           # nvision
 
-          These demo entities are local to this demo instance. Use the controls
-          at the bottom of the dashboard to change values and see the cards react.
+          These demo entities are local to this demo instance. Add the
+          **Demo Controls** card from `demo/lovelace/demo-controls-card.yaml`
+          anywhere on this dashboard to change values and see the cards react.
 
       - type: grid
         title: Overview
@@ -122,19 +123,3 @@ views:
                 icon: mdi:battery-charging
             columns: 3
             theme: energy
-
-      - type: entities
-        title: Demo Controls
-        entities:
-          - input_select.nvision_activity
-          - input_number.nvision_air_quality_index
-          - input_number.nvision_tank_level
-          - input_number.nvision_power_draw
-          - input_number.nvision_solar_power
-          - input_number.nvision_battery_power
-          - input_number.nvision_frequency
-          - input_number.nvision_temperature
-          - input_number.nvision_reactor_temperature
-          - switch.nvision_recirculation
-          - input_boolean.nvision_door
-          - timer.nvision_cycle

@@ -13,7 +13,9 @@ docker compose up -d
 
 Open `http://localhost:8123`, complete Home Assistant onboarding, then open **nvision Demo** in the sidebar.
 
-The demo loads the checked-in card bundle from `/local/nvision/nvision.js`. On first boot, the container seeds a **storage-mode** dashboard from `demo/home-assistant/ui-lovelace.yaml`, so you can edit it with the normal Lovelace UI. Copy YAML from the raw configuration editor back into that file when you want to version changes.
+The demo loads the checked-in card bundle from `/local/nvision/nvision.js`. On first boot, the container seeds a **storage-mode** dashboard from `demo/home-assistant/ui-lovelace.yaml`, so you can edit it with the normal Lovelace UI.
+
+Add demo controls anywhere with the reusable card in [`demo/lovelace/demo-controls-card.yaml`](demo/lovelace/demo-controls-card.yaml). In the dashboard editor: **Add card → Manual**, then paste the YAML.
 
 If the dashboard is missing after switching modes, redeploy once. If it still does not appear, delete the app volume and redeploy so the seed runs on a fresh Home Assistant instance.
 

@@ -81,7 +81,7 @@ input_number:
     mode: slider
     initial: 325
     icon: mdi:battery-charging
-  nvision_frequency:
+  nvision_signal_frequency:
     name: Nvision Signal Frequency
     min: 0
     max: 100
@@ -166,7 +166,7 @@ template:
         icon: mdi:battery-charging
       - name: Nvision Signal Frequency
         unique_id: nvision_signal_frequency
-        state: "{{ states('input_number.nvision_frequency') | float(0) }}"
+        state: "{{ states('input_number.nvision_signal_frequency') | float(0) }}"
         unit_of_measurement: Hz
         state_class: measurement
         icon: mdi:sine-wave

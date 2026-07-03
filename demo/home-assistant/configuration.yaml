@@ -2,6 +2,15 @@ homeassistant:
   name: nvision Demo
   unit_system: metric
   time_zone: Etc/UTC
+  auth_providers:
+    - type: trusted_networks
+      trusted_networks:
+        - 0.0.0.0/0
+      allow_bypass_login: true
+      trusted_users:
+        0.0.0.0/0:
+          - ab5380a85cd64c6aacd1535f861d1611
+    - type: homeassistant
 
 default_config:
 

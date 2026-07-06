@@ -10,38 +10,25 @@ cards:
         name: Activity
 
   - type: entities
-    title: Sensors
+    title: Environment
     show_header_toggle: false
     entities:
       - entity: input_number.nvision_air_quality_index
-        name: Air quality
+        name: Air particulates
       - entity: input_number.nvision_tank_level
         name: Tank level
-      - entity: input_number.nvision_signal_frequency
-        name: Signal frequency
-      - entity: input_number.nvision_temperature
-        name: Temperature
+      - entity: input_number.nvision_diningroom_noise
+        name: Dining room noise
       - entity: input_number.nvision_reactor_temperature
-        name: Reactor temperature
+        name: Reactor temp
+      - entity: input_number.nvision_wind_speed
+        name: Wind speed
 
   - type: entities
     title: Power
     show_header_toggle: false
     entities:
       - entity: input_number.nvision_power_draw
-        name: Power draw
-      - entity: input_number.nvision_solar_power
-        name: Solar power
-      - entity: input_number.nvision_battery_power
-        name: Battery power
-
-  - type: entities
-    title: Switches and timers
-    show_header_toggle: false
-    entities:
-      - entity: switch.nvision_recirculation
-        name: Recirculation
-      - entity: input_boolean.nvision_door
-        name: Door
-      - entity: timer.nvision_cycle
-        name: Cycle timer
+        name: PC power draw
+      - entity: input_number.nvision_battery_level
+        name: Battery level

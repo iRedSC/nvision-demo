@@ -60,18 +60,20 @@ Do not commit Home Assistant runtime storage, passwords, tokens, `.env`, or pre-
 
 The dashboard includes demo entities for:
 
-- Activity
-- Air quality
-- Circle gauge
-- Liquid
-- Power draw
-- Power glance
-- Waveform
-- Heat map
-- Entity overview
-- Reactor temperature
-- Stat
-- Sum
-- Event log
+- Activity (manual control)
+- Air particulates (manual control)
+- Tank level (manual control)
+- Living room noise (simulated)
+- Dining room noise (manual control)
+- Outside temperature (simulated)
+- Reactor temperature (manual control)
+- PC power draw (manual control)
+- Fridge, washer, dryer, dishwasher, and oven power draw (simulated)
+- Appliance running costs tied to power draw (simulated)
+- Battery level (manual control)
+- Wind speed (manual control)
+- Door switch (simulated every 5–30 seconds)
+- Laundry cycle timer (2-minute auto loop)
+- Circle gauge, liquid, waveform, heat map, entity overview, stat, sum, and event log cards
 
 The blank and light cards are intentionally excluded from this public demo.

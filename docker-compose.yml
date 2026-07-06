@@ -13,6 +13,7 @@ services:
     volumes:
       - homeassistant-config:/config
       - ./demo/home-assistant/configuration.yaml:/config/configuration.yaml:ro
+      - ./demo/home-assistant/automations.yaml:/config/automations.yaml:ro
       - ./demo/home-assistant/ui-lovelace.yaml:/bootstrap/ui-lovelace.yaml:ro
       - ./scripts/entrypoint.sh:/bootstrap/entrypoint.sh:ro
       - ./scripts/seed-dashboard.py:/bootstrap/seed-dashboard.py:ro

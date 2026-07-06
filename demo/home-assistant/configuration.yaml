@@ -5,6 +5,8 @@ homeassistant:
 
 default_config:
 
+automation: !include automations.yaml
+
 http:
   use_x_forwarded_for: true
   trusted_proxies:
@@ -42,9 +44,9 @@ input_select:
 
 input_number:
   nvision_air_quality_index:
-    name: Nvision Air Quality Index
+    name: Nvision Air Particulates
     min: 0
-    max: 200
+    max: 500
     step: 1
     mode: slider
     initial: 42
@@ -57,14 +59,38 @@ input_number:
     mode: slider
     initial: 73
     icon: mdi:water-percent
-  nvision_power_draw:
-    name: Nvision Power Draw
+  nvision_livingroom_noise:
+    name: Nvision Living Room Noise
     min: 0
-    max: 3000
-    step: 25
+    max: 100
+    step: 1
+    mode: box
+    initial: 38
+    icon: mdi:volume-high
+  nvision_diningroom_noise:
+    name: Nvision Dining Room Noise
+    min: 0
+    max: 100
+    step: 1
     mode: slider
-    initial: 860
-    icon: mdi:flash
+    initial: 52
+    icon: mdi:volume-medium
+  nvision_wind_speed:
+    name: Nvision Wind Speed
+    min: 0
+    max: 120
+    step: 1
+    mode: slider
+    initial: 14
+    icon: mdi:weather-windy
+  nvision_power_draw:
+    name: Nvision PC Power Draw
+    min: 0
+    max: 800
+    step: 5
+    mode: slider
+    initial: 185
+    icon: mdi:desktop-tower
   nvision_solar_power:
     name: Nvision Solar Power
     min: 0
@@ -81,6 +107,14 @@ input_number:
     mode: slider
     initial: 325
     icon: mdi:battery-charging
+  nvision_battery_level:
+    name: Nvision Battery Level
+    min: 0
+    max: 100
+    step: 1
+    mode: slider
+    initial: 68
+    icon: mdi:battery
   nvision_signal_frequency:
     name: Nvision Signal Frequency
     min: 0
@@ -90,12 +124,12 @@ input_number:
     initial: 58
     icon: mdi:sine-wave
   nvision_temperature:
-    name: Nvision Temperature
+    name: Nvision Outside Temperature
     min: -20
-    max: 120
+    max: 45
     step: 0.5
-    mode: slider
-    initial: 21.5
+    mode: box
+    initial: 12
     icon: mdi:thermometer
   nvision_reactor_temperature:
     name: Nvision Reactor Temperature
@@ -105,11 +139,99 @@ input_number:
     mode: slider
     initial: 640
     icon: mdi:coolant-temperature
+  nvision_fridge_power:
+    name: Nvision Fridge Power
+    min: 0
+    max: 400
+    step: 5
+    mode: box
+    initial: 120
+    icon: mdi:fridge
+  nvision_washer_power:
+    name: Nvision Washer Power
+    min: 0
+    max: 2500
+    step: 10
+    mode: box
+    initial: 0
+    icon: mdi:washing-machine
+  nvision_dryer_power:
+    name: Nvision Dryer Power
+    min: 0
+    max: 3000
+    step: 25
+    mode: box
+    initial: 0
+    icon: mdi:tumble-dryer
+  nvision_dishwasher_power:
+    name: Nvision Dishwasher Power
+    min: 0
+    max: 2000
+    step: 10
+    mode: box
+    initial: 0
+    icon: mdi:dishwasher
+  nvision_oven_power:
+    name: Nvision Oven Power
+    min: 0
+    max: 3000
+    step: 25
+    mode: box
+    initial: 0
+    icon: mdi:stove
+  nvision_pc_power_cost:
+    name: Nvision PC Power Cost
+    min: 0
+    max: 999
+    step: 0.01
+    mode: box
+    initial: 1.42
+    icon: mdi:cash
+  nvision_fridge_power_cost:
+    name: Nvision Fridge Power Cost
+    min: 0
+    max: 999
+    step: 0.01
+    mode: box
+    initial: 0.86
+    icon: mdi:cash
+  nvision_washer_power_cost:
+    name: Nvision Washer Power Cost
+    min: 0
+    max: 999
+    step: 0.01
+    mode: box
+    initial: 0.54
+    icon: mdi:cash
+  nvision_dryer_power_cost:
+    name: Nvision Dryer Power Cost
+    min: 0
+    max: 999
+    step: 0.01
+    mode: box
+    initial: 0.72
+    icon: mdi:cash
+  nvision_dishwasher_power_cost:
+    name: Nvision Dishwasher Power Cost
+    min: 0
+    max: 999
+    step: 0.01
+    mode: box
+    initial: 0.48
+    icon: mdi:cash
+  nvision_oven_power_cost:
+    name: Nvision Oven Power Cost
+    min: 0
+    max: 999
+    step: 0.01
+    mode: box
+    initial: 0.61
+    icon: mdi:cash
 
 timer:
   nvision_cycle:
-    name: Nvision Cycle
-    duration: "00:25:00"
+    name: Nvision Laundry Cycle
+    duration: "00:02:00"
 
 switch:
   - platform: template
@@ -133,23 +255,40 @@ template:
         unique_id: nvision_activity
         state: "{{ states('input_select.nvision_activity') }}"
         icon: mdi:walk
-      - name: Nvision Air Quality
+      - name: Nvision Air Particulates
         unique_id: nvision_air_quality
         state: "{{ states('input_number.nvision_air_quality_index') | float(0) }}"
-        unit_of_measurement: AQI
+        unit_of_measurement: "µg/m³"
         icon: mdi:air-filter
       - name: Nvision Tank Level
         unique_id: nvision_tank_level
         state: "{{ states('input_number.nvision_tank_level') | float(0) }}"
         unit_of_measurement: "%"
         icon: mdi:water-percent
-      - name: Nvision Power Draw
+      - name: Nvision Living Room Noise
+        unique_id: nvision_livingroom_noise
+        state: "{{ states('input_number.nvision_livingroom_noise') | float(0) }}"
+        unit_of_measurement: dB
+        icon: mdi:volume-high
+      - name: Nvision Dining Room Noise
+        unique_id: nvision_diningroom_noise
+        state: "{{ states('input_number.nvision_diningroom_noise') | float(0) }}"
+        unit_of_measurement: dB
+        icon: mdi:volume-medium
+      - name: Nvision Wind Speed
+        unique_id: nvision_wind_speed
+        state: "{{ states('input_number.nvision_wind_speed') | float(0) }}"
+        unit_of_measurement: km/h
+        device_class: wind_speed
+        state_class: measurement
+        icon: mdi:weather-windy
+      - name: Nvision PC Power Draw
         unique_id: nvision_power_draw
         state: "{{ states('input_number.nvision_power_draw') | float(0) }}"
         unit_of_measurement: W
         device_class: power
         state_class: measurement
-        icon: mdi:flash
+        icon: mdi:desktop-tower
       - name: Nvision Solar Power
         unique_id: nvision_solar_power
         state: "{{ states('input_number.nvision_solar_power') | float(0) }}"
@@ -164,13 +303,20 @@ template:
         device_class: power
         state_class: measurement
         icon: mdi:battery-charging
+      - name: Nvision Battery Level
+        unique_id: nvision_battery_level
+        state: "{{ states('input_number.nvision_battery_level') | float(0) }}"
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+        icon: mdi:battery
       - name: Nvision Signal Frequency
         unique_id: nvision_signal_frequency
         state: "{{ states('input_number.nvision_signal_frequency') | float(0) }}"
         unit_of_measurement: Hz
         state_class: measurement
         icon: mdi:sine-wave
-      - name: Nvision Temperature
+      - name: Nvision Outside Temperature
         unique_id: nvision_temperature
         state: "{{ states('input_number.nvision_temperature') | float(0) }}"
         unit_of_measurement: "°C"
@@ -184,6 +330,83 @@ template:
         device_class: temperature
         state_class: measurement
         icon: mdi:coolant-temperature
+      - name: Nvision Fridge Power Draw
+        unique_id: nvision_fridge_power
+        state: "{{ states('input_number.nvision_fridge_power') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:fridge
+      - name: Nvision Washer Power Draw
+        unique_id: nvision_washer_power
+        state: "{{ states('input_number.nvision_washer_power') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:washing-machine
+      - name: Nvision Dryer Power Draw
+        unique_id: nvision_dryer_power
+        state: "{{ states('input_number.nvision_dryer_power') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:tumble-dryer
+      - name: Nvision Dishwasher Power Draw
+        unique_id: nvision_dishwasher_power
+        state: "{{ states('input_number.nvision_dishwasher_power') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:dishwasher
+      - name: Nvision Oven Power Draw
+        unique_id: nvision_oven_power
+        state: "{{ states('input_number.nvision_oven_power') | float(0) }}"
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:stove
+      - name: Nvision PC Power Cost
+        unique_id: nvision_pc_power_cost
+        state: "{{ states('input_number.nvision_pc_power_cost') | float(0) | round(2) }}"
+        unit_of_measurement: USD
+        device_class: monetary
+        state_class: total_increasing
+        icon: mdi:cash
+      - name: Nvision Fridge Power Cost
+        unique_id: nvision_fridge_power_cost
+        state: "{{ states('input_number.nvision_fridge_power_cost') | float(0) | round(2) }}"
+        unit_of_measurement: USD
+        device_class: monetary
+        state_class: total_increasing
+        icon: mdi:cash
+      - name: Nvision Washer Power Cost
+        unique_id: nvision_washer_power_cost
+        state: "{{ states('input_number.nvision_washer_power_cost') | float(0) | round(2) }}"
+        unit_of_measurement: USD
+        device_class: monetary
+        state_class: total_increasing
+        icon: mdi:cash
+      - name: Nvision Dryer Power Cost
+        unique_id: nvision_dryer_power_cost
+        state: "{{ states('input_number.nvision_dryer_power_cost') | float(0) | round(2) }}"
+        unit_of_measurement: USD
+        device_class: monetary
+        state_class: total_increasing
+        icon: mdi:cash
+      - name: Nvision Dishwasher Power Cost
+        unique_id: nvision_dishwasher_power_cost
+        state: "{{ states('input_number.nvision_dishwasher_power_cost') | float(0) | round(2) }}"
+        unit_of_measurement: USD
+        device_class: monetary
+        state_class: total_increasing
+        icon: mdi:cash
+      - name: Nvision Oven Power Cost
+        unique_id: nvision_oven_power_cost
+        state: "{{ states('input_number.nvision_oven_power_cost') | float(0) | round(2) }}"
+        unit_of_measurement: USD
+        device_class: monetary
+        state_class: total_increasing
+        icon: mdi:cash
     binary_sensor:
       - name: Nvision Door
         unique_id: nvision_door

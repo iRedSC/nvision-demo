@@ -1,0 +1,213 @@
+- id: nvision_door_simulate
+  alias: Nvision Door Simulator
+  description: Toggle the door open and closed every 5–30 seconds.
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - repeat:
+        while: true
+        sequence:
+          - delay:
+              seconds: "{{ range(5, 31) | random }}"
+          - service: input_boolean.toggle
+            target:
+              entity_id: input_boolean.nvision_door
+
+- id: nvision_laundry_cycle_loop
+  alias: Nvision Laundry Cycle Loop
+  description: Keep the laundry timer running on a 2-minute loop.
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: event
+      event_type: timer.finished
+      event_data:
+        entity_id: timer.nvision_cycle
+  action:
+    - service: timer.start
+      target:
+        entity_id: timer.nvision_cycle
+
+- id: nvision_livingroom_noise_simulate
+  alias: Nvision Living Room Noise Simulator
+  trigger:
+    - platform: time_pattern
+      seconds: "/4"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_livingroom_noise
+      data:
+        value: >
+          {% set current = states('input_number.nvision_livingroom_noise') | float(38) %}
+          {% set delta = range(-6, 7) | random %}
+          {{ [[current + delta, 18] | max, 88] | min }}
+
+- id: nvision_outside_temp_simulate
+  alias: Nvision Outside Temperature Simulator
+  trigger:
+    - platform: time_pattern
+      minutes: "/2"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_temperature
+      data:
+        value: >
+          {% set current = states('input_number.nvision_temperature') | float(12) %}
+          {% set delta = (range(-10, 11) | random) / 10 %}
+          {{ [[current + delta, -8] | max, 38] | min | round(1) }}
+
+- id: nvision_fridge_power_simulate
+  alias: Nvision Fridge Power Simulator
+  trigger:
+    - platform: time_pattern
+      seconds: "/8"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_fridge_power
+      data:
+        value: >
+          {% set current = states('input_number.nvision_fridge_power') | float(120) %}
+          {% set delta = range(-20, 21) | random %}
+          {{ [[current + delta, 70] | max, 260] | min }}
+
+- id: nvision_washer_power_simulate
+  alias: Nvision Washer Power Simulator
+  trigger:
+    - platform: time_pattern
+      seconds: "/6"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_washer_power
+      data:
+        value: >
+          {% set roll = range(0, 10) | random %}
+          {% if roll < 4 %}
+            {{ range(0, 60) | random }}
+          {% elif roll < 8 %}
+            {{ range(180, 760) | random }}
+          {% else %}
+            {{ range(40, 180) | random }}
+          {% endif %}
+
+- id: nvision_dryer_power_simulate
+  alias: Nvision Dryer Power Simulator
+  trigger:
+    - platform: time_pattern
+      seconds: "/5"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_dryer_power
+      data:
+        value: >
+          {% set roll = range(0, 10) | random %}
+          {% if roll < 3 %}
+            {{ range(0, 40) | random }}
+          {% elif roll < 9 %}
+            {{ range(900, 2400) | random }}
+          {% else %}
+            {{ range(120, 500) | random }}
+          {% endif %}
+
+- id: nvision_dishwasher_power_simulate
+  alias: Nvision Dishwasher Power Simulator
+  trigger:
+    - platform: time_pattern
+      seconds: "/7"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_dishwasher_power
+      data:
+        value: >
+          {% set roll = range(0, 10) | random %}
+          {% if roll < 5 %}
+            {{ range(0, 30) | random }}
+          {% else %}
+            {{ range(250, 1700) | random }}
+          {% endif %}
+
+- id: nvision_oven_power_simulate
+  alias: Nvision Oven Power Simulator
+  trigger:
+    - platform: time_pattern
+      seconds: "/9"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_oven_power
+      data:
+        value: >
+          {% set roll = range(0, 10) | random %}
+          {% if roll < 6 %}
+            {{ range(0, 25) | random }}
+          {% else %}
+            {{ range(800, 2200) | random }}
+          {% endif %}
+
+- id: nvision_appliance_costs_simulate
+  alias: Nvision Appliance Cost Simulator
+  description: Increment appliance running costs based on current power draw.
+  trigger:
+    - platform: time_pattern
+      seconds: "/30"
+  action:
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_pc_power_cost
+      data:
+        value: >
+          {% set power = states('input_number.nvision_power_draw') | float(0) %}
+          {% set current = states('input_number.nvision_pc_power_cost') | float(0) %}
+          {% set increment = (power * 0.00003) + ((range(1, 6) | random) / 100) %}
+          {{ (current + increment) | round(2) }}
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_fridge_power_cost
+      data:
+        value: >
+          {% set power = states('input_number.nvision_fridge_power') | float(0) %}
+          {% set current = states('input_number.nvision_fridge_power_cost') | float(0) %}
+          {% set increment = (power * 0.00003) + ((range(1, 4) | random) / 100) %}
+          {{ (current + increment) | round(2) }}
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_washer_power_cost
+      data:
+        value: >
+          {% set power = states('input_number.nvision_washer_power') | float(0) %}
+          {% set current = states('input_number.nvision_washer_power_cost') | float(0) %}
+          {% set increment = (power * 0.00003) + ((range(1, 6) | random) / 100) %}
+          {{ (current + increment) | round(2) }}
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_dryer_power_cost
+      data:
+        value: >
+          {% set power = states('input_number.nvision_dryer_power') | float(0) %}
+          {% set current = states('input_number.nvision_dryer_power_cost') | float(0) %}
+          {% set increment = (power * 0.00003) + ((range(2, 6) | random) / 100) %}
+          {{ (current + increment) | round(2) }}
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_dishwasher_power_cost
+      data:
+        value: >
+          {% set power = states('input_number.nvision_dishwasher_power') | float(0) %}
+          {% set current = states('input_number.nvision_dishwasher_power_cost') | float(0) %}
+          {% set increment = (power * 0.00003) + ((range(1, 5) | random) / 100) %}
+          {{ (current + increment) | round(2) }}
+    - service: input_number.set_value
+      target:
+        entity_id: input_number.nvision_oven_power_cost
+      data:
+        value: >
+          {% set power = states('input_number.nvision_oven_power') | float(0) %}
+          {% set current = states('input_number.nvision_oven_power_cost') | float(0) %}
+          {% set increment = (power * 0.00003) + ((range(1, 5) | random) / 100) %}
+          {{ (current + increment) | round(2) }}

@@ -11,6 +11,9 @@ views:
           **Demo Controls** card from `demo/lovelace/demo-controls-card.yaml`
           anywhere on this dashboard to change values and see the cards react.
 
+          Simulated sensors (noise, outside temp, appliances, door, laundry timer,
+          and running costs) update on their own.
+
       - type: grid
         title: Overview
         columns: 2
@@ -20,22 +23,22 @@ views:
             name: Facility Overview
             mode: manual
             entities:
-              - sensor.nvision_temperature
-              - sensor.nvision_power_draw
+              - sensor.nvision_outside_temperature
+              - sensor.nvision_pc_power_draw
               - sensor.nvision_tank_level
-              - sensor.nvision_air_quality
-              - sensor.nvision_signal_frequency
-              - switch.nvision_recirculation
+              - sensor.nvision_air_particulates
+              - sensor.nvision_livingroom_noise
+              - sensor.nvision_wind_speed
               - binary_sensor.nvision_door
               - timer.nvision_cycle
             show_info: true
           - type: custom:nvision-event-log-card
             title: Event Log
             entities:
-              - sensor.nvision_temperature
-              - sensor.nvision_power_draw
-              - switch.nvision_recirculation
+              - sensor.nvision_outside_temperature
+              - sensor.nvision_pc_power_draw
               - binary_sensor.nvision_door
+              - sensor.nvision_fridge_power_draw
 
       - type: grid
         title: Signals
@@ -47,12 +50,12 @@ views:
             entity: sensor.nvision_activity
             speed: 0.9
           - type: custom:nvision-air-quality-card
-            name: Air Quality
-            entity: sensor.nvision_air_quality
+            name: Air Particulates
+            entity: sensor.nvision_air_particulates
             min: 0
-            max: 200
+            max: 500
           - type: custom:nvision-circle-gauge-card
-            name: Cycle
+            name: Laundry Cycle
             entity: timer.nvision_cycle
           - type: custom:nvision-liquid-card
             name: Tank Level
@@ -62,8 +65,8 @@ views:
             liquid_style: bubbles
             level_color: true
           - type: custom:nvision-waveform-card
-            name: Signal
-            entity: sensor.nvision_signal_frequency
+            name: Living Room Noise
+            entity: sensor.nvision_livingroom_noise
             min: 0
             max: 100
             layout: field
@@ -82,27 +85,29 @@ views:
         square: false
         cards:
           - type: custom:nvision-power-draw-card
-            name: Main Draw
-            entity: sensor.nvision_power_draw
+            name: PC Draw
+            entity: sensor.nvision_pc_power_draw
             min: 0
-            max: 3000
+            max: 800
           - type: custom:nvision-power-glance-card
             entities:
-              - sensor.nvision_power_draw
-              - sensor.nvision_solar_power
-              - sensor.nvision_battery_power
+              - sensor.nvision_fridge_power_draw
+              - sensor.nvision_washer_power_draw
+              - sensor.nvision_dryer_power_draw
+              - sensor.nvision_dishwasher_power_draw
+              - sensor.nvision_oven_power_draw
             columns: 3
-            min: -2000
-            max: 5000
+            min: 0
+            max: 3000
           - type: custom:nvision-stat-card
-            name: Temperature
-            entity: sensor.nvision_temperature
+            name: Outside Temperature
+            entity: sensor.nvision_outside_temperature
             trend_period: 3600
             graph: area
             graph_height: 80
           - type: custom:nvision-heat-map-card
-            name: Temperature Rhythm
-            entity: sensor.nvision_temperature
+            name: Outside Temperature Rhythm
+            entity: sensor.nvision_outside_temperature
             preset: timeline_24h
             operation: auto
             color_mode: temperature
@@ -110,16 +115,25 @@ views:
             show_legend: true
             show_current: true
           - type: custom:nvision-sum-card
-            name: Power Mix
+            name: Appliance Running Costs
             entities:
-              - entity: sensor.nvision_power_draw
-                name: Load
-                icon: mdi:flash
-              - entity: sensor.nvision_solar_power
-                name: Solar
-                icon: mdi:solar-power
-              - entity: sensor.nvision_battery_power
-                name: Battery
-                icon: mdi:battery-charging
+              - entity: sensor.nvision_pc_power_cost
+                name: PC
+                icon: mdi:desktop-tower
+              - entity: sensor.nvision_fridge_power_cost
+                name: Fridge
+                icon: mdi:fridge
+              - entity: sensor.nvision_washer_power_cost
+                name: Washer
+                icon: mdi:washing-machine
+              - entity: sensor.nvision_dryer_power_cost
+                name: Dryer
+                icon: mdi:tumble-dryer
+              - entity: sensor.nvision_dishwasher_power_cost
+                name: Dishwasher
+                icon: mdi:dishwasher
+              - entity: sensor.nvision_oven_power_cost
+                name: Oven
+                icon: mdi:stove
             columns: 3
-            theme: energy
+            theme: monetary
